@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import QRCode from "qrcode";
 import React from "react";
 import MTSLib from "@lespantsfancy/message-transfer-system";
 
@@ -18,6 +19,10 @@ export default class Game extends React.Component {
         this.setState({
             subscriptionId: id
         });
+
+        // QRCode.toDataURL(`http://192.168.86.100:3001`)
+        QRCode.toCanvas(document.getElementById("canvas-controller"), `http://192.168.86.100:3001/c`);
+        QRCode.toCanvas(document.getElementById("canvas-viewport"), `http://192.168.86.100:3001/v`);
         
         setTimeout(() => {
             this.context.internal.MODE = "VIEWPORT";
@@ -40,67 +45,76 @@ export default class Game extends React.Component {
             )
         }
 
-        let attempts = [];
-        for(let i = 0; i < 5; i++) {
-            if(i < this.context.state.Letters.Incorrect.length) {
-                attempts.push(this.context.state.Letters.Incorrect[ i ]);
-            } else {
-                attempts.push(true);
-            }
-        }
-
-        return (
-            <div className="flex flex-column items-center justify-around">
-                <div className="flex items-center justify-center">
-                    {
-                        attempts.map(att => {
-                            if(att === true) {
-                                return (
-                                    <div className="flex items-center justify-center w3 h3 bg-light-green ba br2 b--dark-green mr3 mt2 mb4">&nbsp;</div>
-                                );
-                            }
-
-                            return (
-                                <div className="flex items-center justify-center w3 h3 bg-light-red f3 white tc ba br2 b--dark-red mr3 mt2 mb4">{ att }</div>
-                            );
-                        })
-                    }
+        if(this.context.state.Winner !== false) {
+            return (
+                <div className="code tc mt4 flex flex-column items-center justify-around">
+                    <br /><br />
+                    <h1 className="f1 h3"><span role="img" aria-label="yay">🎊</span> Winner <span role="img" aria-label="yay">🎊</span></h1>
+                    <h3 className="f3 h3"><span className="b">{ this.context.state.Winner }</span> { this.context.state.Winner === "Scribe" ? "has" : "have" } won!</h3>
+                    <br />
+                    <div className="code i b">"{ this.context.state.Word }"</div>
                 </div>
-
-                <div className="flex flex-wrap items-center justify-around tc code">
-                    {
-                        this.context.state.Word.split("").map((l, i)  => {
-                            if(l.charCodeAt(0) < 65 || l.charCodeAt(0) > 90) {
-                                return (
-                                    <div className="f3 pb2 ma1 w2" key={ i }>{ l }</div>
-                                );
-                            }
-
-                            if(this.context.state.Letters.Correct.includes(l)) {                            
-                                return (
-                                    <div className="f3 pb2 bb ma1 w2" key={ i }>{ l }</div>
-                                );
-                            }
-
-                            return (
-                                <div className="f3 pb2 bb ma1 w2" key={ i }>&nbsp;</div>
-                            );
-                        })
-                    }
-                </div>
-
-                {
-                    this.context.state.Winner !== false
-                    ? (
-                        <div className="code tc mt4 flex flex-column items-center justify-around">
-                            <br /><br />
-                            <h1 className="f1 h3"><span role="img" aria-label="yay">🎊</span> Winner <span role="img" aria-label="yay">🎊</span></h1>
-                            <h3 className="f3 h3"><span className="b">{ this.context.state.Winner }</span> { this.context.state.Winner === "Scribe" ? "has" : "have" } won!</h3>
-                        </div>
-                    )
-                    : null
+            );
+        } else {
+            let attempts = [];
+            for(let i = 0; i < 5; i++) {
+                if(i < this.context.state.Letters.Incorrect.length) {
+                    attempts.push(this.context.state.Letters.Incorrect[ i ]);
+                } else {
+                    attempts.push(true);
                 }
-            </div>
-        );
+            }
+
+            let words = this.context.state.Word.split(" ");
+
+            return (
+                <div className="flex flex-column items-center justify-around">
+                    <div className="flex items-center justify-center">
+                        {
+                            attempts.map((att, i) => {
+                                if(att === true) {
+                                    return (
+                                        <div key={ i } className="flex items-center justify-center w3 h3 bg-light-green ba br2 b--dark-green mr3 mt2 mb4">&nbsp;</div>
+                                    );
+                                }
+
+                                return (
+                                    <div key={ i } className="flex items-center justify-center w3 h3 bg-light-red f3 white tc ba br2 b--dark-red mr3 mt2 mb4">{ att }</div>
+                                );
+                            })
+                        }
+                    </div>
+
+                    {
+                        words.map((word, j) => {                        
+                            return (                            
+                                <div key={ j } className="flex flex-wrap tc code">
+                                    {
+                                        word.split("").map((l, i)  => {                            
+                                            if(l.charCodeAt(0) < 65 || l.charCodeAt(0) > 90) {
+                                                return (
+                                                    <div className="f3 pb2 ma1 w2" key={ i }>{ l }</div>
+                                                );
+                                            }
+
+                                            if(this.context.state.Letters.Correct.includes(l)) {                            
+                                                return (
+                                                    <div className="f3 pb2 bb ma1 w2" key={ i }>{ l }</div>
+                                                );
+                                            }
+
+                                            return (
+                                                <div className="f3 pb2 bb ma1 w2" key={ i }>&nbsp;</div>
+                                            );
+                                        })
+                                    }
+                                </div>
+                            );
+                        })
+                    }
+                    <canvas id="canvas"></canvas>
+                </div>
+            );
+        }
     }
 };

@@ -39,7 +39,7 @@ export default class Alphabet extends React.Component {
 
                         return (
                             <button
-                                className="code f4 ba bw1 br2 mt3"
+                                className="code b f4 ba bw2 br2 mt3"
                                 style={{
                                     color: color,
                                     borderColor: color,
