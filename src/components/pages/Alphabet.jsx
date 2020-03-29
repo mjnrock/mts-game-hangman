@@ -33,10 +33,14 @@ export default class Alphabet extends React.Component {
 
                         return (
                             <button
-                                className="code f4 ba bw1 br2 h3 w3 mt3"
+                                className="code f4 ba bw1 br2 mt3"
                                 style={{
                                     color: color,
-                                    borderColor: color
+                                    borderColor: color,
+                                    width: "4.75rem",
+                                    height: "4.75rem",
+                                    // width: "78px",
+                                    // height: "78px",
                                 }}
                                 key={ char }
                                 onClick={ e => this.onClick(e, char) }

@@ -1,4 +1,6 @@
 export default {
+    REQUEST_GAME: "Game.RequestGame",
+    
     NEW_GAME: "Game.NewGame",
     NEW_PLAYER: "Game.NewPlayer",
     NEW_GUESS: "Game.NewGuess",

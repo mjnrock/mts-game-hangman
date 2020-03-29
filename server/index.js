@@ -9,6 +9,8 @@ const port = 3000;
 
 const Game = {
     SignalTypes: {
+        REQUEST_GAME: "Game.RequestGame",
+
         NEW_GAME: "Game.NewGame",
         NEW_PLAYER: "Game.NewPlayer",
         NEW_GUESS: "Game.NewGuess",
@@ -25,7 +27,7 @@ const Game = {
         Players: [],
         Scribe: null,
         Winner: false,
-        Word: "CATS",
+        Word: "",
         Letters: {
             Correct: [],
             Incorrect: [],
@@ -50,7 +52,7 @@ const Game = {
                 Players: [],
                 Scribe: null,
                 Winner: false,
-                Word: "CATS",
+                Word: "",
                 Letters: {
                     Correct: [],
                     Incorrect: [],

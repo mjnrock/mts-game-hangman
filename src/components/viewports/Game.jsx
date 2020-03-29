@@ -6,46 +6,18 @@ export default class ReadyCheck extends React.Component {
     }
 
     render() {
-        console.log(this.context.state.Word.split(""))
         return (
             <div className="flex flex-column items-center justify-around">
-                <div className="flex items-center justify-around">
-                    <div>
-                        <h3 className="f3 pb2 bb">Correct</h3>
-                        <div className="tc f4 pt2 code">
-                            {
-                                this.context.state.Letters.Correct.map((l, i)  => (
-                                    <div key={ i }>{ l }</div>
-                                ))
-                            }
-                        </div>
-                    </div>
-
-                    <div>
-                        <h3 className="f3 pb2 bb">Attempts Remaining</h3>
-                        <div className="tc f4 pt2 code">
-                            { 5 - this.context.state.Letters.Incorrect.length }
-                        </div>
-                    </div>
-
-                    <div>
-                        <h3 className="f3 pb2 bb">Incorrect</h3>
-                        <div className="tc f4 pt2 code">
-                            {
-                                this.context.state.Letters.Incorrect.map((l, i) => (
-                                    <div key={ i }>{ l }</div>
-                                ))
-                            }
-                        </div>
-                    </div>
+                <div>
+                    { 5 - this.context.state.Letters.Incorrect.length }
                 </div>
 
-                <div className="flex flex-wrap items-center justify-around tc">
+                <div className="flex flex-wrap items-center justify-around tc code">
                     {
                         this.context.state.Word.split("").map((l, i)  => {
-                            if(l === " ") {
+                            if(l.charCodeAt(0) < 65 || l.charCodeAt(0) > 90) {
                                 return (
-                                    <div className="f3 pb2 ma1 w2" key={ i }>&nbsp;</div>
+                                    <div className="f3 pb2 ma1 w2" key={ i }>{ l }</div>
                                 );
                             }
 
