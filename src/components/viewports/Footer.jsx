@@ -1,8 +1,5 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
-import MTSLib from "@lespantsfancy/message-transfer-system";
-
-import SignalTypes from "./../../SignalTypes";
 
 import Context from "./../../Context";
 

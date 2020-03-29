@@ -6,9 +6,6 @@ import {
     Route,
     Link
 } from "react-router-dom";
-import MTSLib from "@lespantsfancy/message-transfer-system";
-
-import SignalTypes from "./SignalTypes";
 
 import Context from "./Context";
 import Viewports from "./components/viewports/package";
