@@ -1,4 +1,7 @@
 import React from "react";
+import MTSLib from "@lespantsfancy/message-transfer-system";
+
+import SignalTypes from "./../../SignalTypes";
 
 export default class WordChoice extends React.Component {
     constructor(props) {
@@ -15,8 +18,11 @@ export default class WordChoice extends React.Component {
         });
     }
 
-    onBeginClick(e) {
-        alert("Begin!");
+    onBeginClick(e) {        
+        this.context.message((new MTSLib.Message(
+            SignalTypes.NEW_WORD,
+            this.state.word
+        )).elevate());
     }
 
     render() {

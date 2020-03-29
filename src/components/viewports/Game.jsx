@@ -9,9 +9,21 @@ export default class ReadyCheck extends React.Component {
         return (
             <div>
                 <div>
-                    <div>Correct Words</div>
-                    <div>Man</div>
-                    <div>Incorrect Words</div>
+                    <div>
+                        {
+                            this.context.state.Letters.Correct.map(l => (
+                                <div>{ l }</div>
+                            ))
+                        }
+                    </div>
+                    <div>Attempts Remaining: { 5 - this.context.state.Letters.Incorrect.length }</div>
+                    <div>
+                        {
+                            this.context.state.Letters.Incorrect.map(l => (
+                                <div>{ l }</div>
+                            ))
+                        }
+                    </div>
                 </div>
                 <div>
                     <div>#</div>
