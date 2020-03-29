@@ -12,7 +12,7 @@ export default class ReadyCheck extends React.Component {
                     <div>
                         {
                             this.context.state.Letters.Correct.map(l => (
-                                <div>{ l }</div>
+                                <div key={ l }>{ l }</div>
                             ))
                         }
                     </div>
@@ -20,7 +20,7 @@ export default class ReadyCheck extends React.Component {
                     <div>
                         {
                             this.context.state.Letters.Incorrect.map(l => (
-                                <div>{ l }</div>
+                                <div key={ l }>{ l }</div>
                             ))
                         }
                     </div>
