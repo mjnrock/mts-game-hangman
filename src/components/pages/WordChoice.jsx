@@ -24,12 +24,23 @@ export default class WordChoice extends React.Component {
             this.state.word
         )).elevate());
     }
+    
+    onRequestNewGame(e) {
+        this.context.message((new MTSLib.Message(
+            SignalTypes.NEW_GAME,
+            true
+        )).elevate());
+    }
 
     render() {
+        let props = this.context.state.Word === "" ? {} : { readOnly: true };
+
+        console.log()
+
         return (
             <div className="flex flex-column items-center justify-around">
                 <textarea
-                    className="f2 mt4 w-90 code overflow-hidden"
+                    className={ `f2 mt4 w-90 code overflow-hidden ba br2 b--black-40 ${ this.context.state.Word !== "" ? "bg-light-gray" : ""}` }
                     style={{
                         resize: "none"
                     }}
@@ -37,9 +48,12 @@ export default class WordChoice extends React.Component {
                     maxLength="30"
                     onChange={ this.onChange.bind(this) }
                     value={ this.state.word }
+                    { ...props }
                 ></textarea>
 
-                <button className="mt4 pa4 w-90 ba br2 f4 blue b--blue code" onClick={ this.onSetWordClick.bind(this) }>Begin</button>
+                <button className={ `mt4 pa4 w-90 ba br2 f4 dark-blue b--blue code ${ this.context.state.Word !== "" ? "bg-light-gray" : "bg-light-blue"}` } onClick={ this.onSetWordClick.bind(this) }>Set Word/Phrase</button>
+
+                <button className="mt3 pa3 w-90 ba br2 f4 white b--red code bg-light-red" onClick={ this.onRequestNewGame.bind(this) }>Start New Game</button>
             </div>
         );
 

@@ -46,11 +46,17 @@ const Game = {
             Game.State.Letters.Remaining.push(String.fromCharCode(i));
         }
 
+        if(Game.State.Players.length) {
+            Game.State.Scribe = Game.State.Players[ 0 ];
+        } else {
+            Game.State.Scribe = null;
+        }
+
         MTS.message((new MTSLib.Message(
             Game.SignalTypes.NEW_GAME,
             {
                 Players: [],
-                Scribe: null,
+                Scribe: Game.State.Scribe,
                 Winner: false,
                 Word: "",
                 Letters: {
@@ -130,7 +136,23 @@ const MTS = (new MTSLib.Main({
 Game.init();
 
 app.ws("/", function (ws, req) {
-    let id = MTS.Network.webSocketNode({ ws });
+    let id = MTS.Network.webSocketNode({
+        ws,
+        onClose: (wsn) => {
+            // Game.State.Players = Game.State.Players.filter(p => p !== wsn.id);            
+
+            // if(Game.State.Players.length) {
+            //     Game.State.Scribe = Game.State.Players[ 0 ];
+            // } else {
+            //     Game.State.Scribe = null;
+            // }
+            
+            // MTS.message((new MTSLib.Message(
+            //     Game.SignalTypes.SYNC_STATE,
+            //     Game.State
+            // )).elevate());
+        }
+    });
 
     MTS.message(new MTSLib.Message(
         Game.SignalTypes.NEW_PLAYER,

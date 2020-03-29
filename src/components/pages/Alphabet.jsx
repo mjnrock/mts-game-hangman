@@ -19,6 +19,12 @@ export default class Alphabet extends React.Component {
             chars.push( i );
         }
 
+        if(this.context.state.Word === "") {
+            return (
+                <div className="tc f3">Waiting on game to begin..</div>
+            )
+        }
+
         return (
             <div className="flex flex-wrap items-center justify-around">
                 {
