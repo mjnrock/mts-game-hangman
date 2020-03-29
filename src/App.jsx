@@ -39,11 +39,11 @@ export default class App extends React.Component {
     render() {
         if(this.context.state.Winner !== false) {
             return (
-                <div>
-                    <h1>Congratulations!</h1>
-                    <h3>{ this.context.state.Winner } { this.context.state.Winner === "Scribe" ? "has" : "have" } won!</h3>
+                <div className="tc mt4 flex flex-column items-center justify-around">
+                    <h1 className="f1 h3"><span role="img" aria-label="yay">🎊</span> Winner <span role="img" aria-label="yay">🎊</span></h1>
+                    <h3 className="f3 h3">{ this.context.state.Winner } { this.context.state.Winner === "Scribe" ? "has" : "have" } won!</h3>
                     <br /><br /><br />
-                    <button onClick={ this.onRequestNewGame.bind(this) }>Play Again</button>
+                    <button className="pa4 w-90 ba br2 f4 blue b--blue code" onClick={ this.onRequestNewGame.bind(this) }>Play Again</button>
                 </div>
             );
         } else {

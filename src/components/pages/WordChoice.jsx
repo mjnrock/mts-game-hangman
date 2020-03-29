@@ -27,7 +27,7 @@ export default class WordChoice extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="mt4">
                 <input
                     style={{
                         width: "500px",

@@ -20,28 +20,23 @@ export default class Alphabet extends React.Component {
         }
 
         return (
-            <div>
+            <div className="flex flex-wrap items-center justify-around">
                 {
                     chars.map(char => {
                         let color = "#888";
 
                         if(this.context.state.Letters.Incorrect.includes(String.fromCharCode(char))) {
-                            color = "#f00";
+                            color = "#b24343";
                         } else if(this.context.state.Letters.Correct.includes(String.fromCharCode(char))) {
-                            color = "#0f0";
+                            color = "#3ab242";
                         }
 
                         return (
                             <button
+                                className="code f4 ba bw1 br2 h3 w3 mt3"
                                 style={{
-                                    margin: "4px",
-                                    width: "23vw",
-                                    height: "15vh",
                                     color: color,
-                                    backgroundColor: "#eee",
-                                    border: `4px solid ${ color }`,
-                                    borderRadius: "3px",
-                                    fontSize: "6em"
+                                    borderColor: color
                                 }}
                                 key={ char }
                                 onClick={ e => this.onClick(e, char) }
