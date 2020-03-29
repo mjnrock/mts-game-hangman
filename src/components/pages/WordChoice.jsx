@@ -18,11 +18,29 @@ export default class WordChoice extends React.Component {
         });
     }
 
+    onKeyUp(e) {
+        if(e.which === 13) {
+            e.preventDefault();
+
+            this.context.message((new MTSLib.Message(
+                SignalTypes.NEW_WORD,
+                this.state.word.trim()
+            )).elevate());
+            
+            this.setState({
+                word: e.target.value.trim()
+            });
+        }
+    }
     onSetWordClick(e) {        
         this.context.message((new MTSLib.Message(
             SignalTypes.NEW_WORD,
-            this.state.word
+            this.state.word.trim()
         )).elevate());
+        
+        this.setState({
+            word: e.target.value.trim()
+        });
     }
     
     onRequestNewGame(e) {
@@ -35,10 +53,9 @@ export default class WordChoice extends React.Component {
     render() {
         let props = this.context.state.Word === "" ? {} : { readOnly: true };
 
-        console.log()
-
         return (
             <div className="flex flex-column items-center justify-around">
+                <h2 className="mt2 f3 tc code">You're the Scribe</h2>
                 <textarea
                     className={ `f2 mt4 w-90 code overflow-hidden ba br2 b--black-40 ${ this.context.state.Word !== "" ? "bg-light-gray" : ""}` }
                     style={{
@@ -46,6 +63,7 @@ export default class WordChoice extends React.Component {
                     }}
                     rows="5"
                     maxLength="30"
+                    onKeyUp={ this.onKeyUp.bind(this) } 
                     onChange={ this.onChange.bind(this) }
                     value={ this.state.word }
                     { ...props }

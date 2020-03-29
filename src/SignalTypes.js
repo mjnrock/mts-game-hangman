@@ -6,6 +6,7 @@ export default {
     NEW_GUESS: "Game.NewGuess",
     NEW_WORD: "Game.NewWord",
 
+    DECLARE_MODE: "Game.DeclareMode",
     DECLARE_PLAYERS: "Game.DeclarePlayers",
     DECLARE_LETTERS: "Game.DeclareLetters",
     DECLARE_WORD: "Game.DeclareWord",

@@ -4,7 +4,6 @@ import SignalTypes from "./SignalTypes";
 
 const MTS = (new MTSLib.Main({
     receive: function(msg) {
-        console.warn(msg);
         if(msg.type === SignalTypes.DECLARE_LETTERS) {
             this.state = {
                 ...this.state,
@@ -21,11 +20,15 @@ const MTS = (new MTSLib.Main({
                 Winner: msg.payload
             };
         } else if(msg.type === SignalTypes.NEW_GAME || msg.type === SignalTypes.SYNC_STATE) {
-            this.state = msg.payload;
+            this.state = {
+                ...msg.payload
+            };
         }
     }
 })).loadNetwork(false);
 MTS.toggleStateEmission();
+
+MTS.internal.MODE = "CONTROLLER";
 
 const MTSContext = React.createContext(MTS);
 

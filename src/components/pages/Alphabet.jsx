@@ -21,7 +21,7 @@ export default class Alphabet extends React.Component {
 
         if(this.context.state.Word === "") {
             return (
-                <div className="tc f3">Waiting on game to begin..</div>
+                <div className="mt4 code tc f3">Waiting for game to begin...</div>
             )
         }
 

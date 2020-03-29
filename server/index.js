@@ -16,6 +16,7 @@ const Game = {
         NEW_GUESS: "Game.NewGuess",
         NEW_WORD: "Game.NewWord",
 
+        DECLARE_MODE: "Game.DeclareMode",
         DECLARE_PLAYERS: "Game.DeclarePlayers",
         DECLARE_LETTERS: "Game.DeclareLetters",
         DECLARE_WORD: "Game.DeclareWord",
@@ -25,6 +26,7 @@ const Game = {
     },
     State: {
         Players: [],
+        Viewers: [],
         Scribe: null,
         Winner: false,
         Word: "",
@@ -46,11 +48,7 @@ const Game = {
             Game.State.Letters.Remaining.push(String.fromCharCode(i));
         }
 
-        if(Game.State.Players.length) {
-            Game.State.Scribe = Game.State.Players[ 0 ];
-        } else {
-            Game.State.Scribe = null;
-        }
+        Game.assignScribe();
 
         MTS.message((new MTSLib.Message(
             Game.SignalTypes.NEW_GAME,
@@ -87,6 +85,18 @@ const Game = {
                 Game.State.Winner = "Players";
             }
         }
+    },
+    assignScribe() {
+        if(Game.State.Players.length) {
+            Game.State.Scribe = Game.State.Players[ 0 ];
+        } else {
+            Game.State.Scribe = null;
+        }
+
+        MTS.message((new MTSLib.Message(
+            Game.SignalTypes.SYNC_STATE,
+            Game.State
+        )).elevate());
     }
 };
 
@@ -129,6 +139,15 @@ const MTS = (new MTSLib.Main({
             Game.check();
         } else if(msg.type === Game.SignalTypes.NEW_GAME) {
             Game.init();
+        } else if(msg.type === Game.SignalTypes.DECLARE_MODE) {
+            let id = MTSLib.Registry.SanitizeId(msg.source);
+            
+            if(msg.payload === "VIEWPORT") {
+                Game.State.Players = Game.State.Players.filter(p => p !== id);
+                Game.State.Viewers.push(id);
+            }
+
+            Game.assignScribe();
         }
     }
 })).loadNetwork(true);
@@ -139,25 +158,31 @@ app.ws("/", function (ws, req) {
     let id = MTS.Network.webSocketNode({
         ws,
         onClose: (wsn) => {
-            // Game.State.Players = Game.State.Players.filter(p => p !== wsn.id);            
+            Game.State.Players = Game.State.Players.filter(p => p !== wsn.id);
+            Game.State.Viewers = Game.State.Viewers.filter(p => p !== wsn.id);            
 
-            // if(Game.State.Players.length) {
-            //     Game.State.Scribe = Game.State.Players[ 0 ];
-            // } else {
-            //     Game.State.Scribe = null;
-            // }
+            if(Game.State.Players.length) {
+                Game.State.Scribe = Game.State.Players[ 0 ];
+            } else {
+                Game.State.Scribe = null;
+            }
             
-            // MTS.message((new MTSLib.Message(
-            //     Game.SignalTypes.SYNC_STATE,
-            //     Game.State
-            // )).elevate());
+            MTS.message((new MTSLib.Message(
+                Game.SignalTypes.SYNC_STATE,
+                Game.State
+            )).elevate());
         }
     });
 
     MTS.message(new MTSLib.Message(
         Game.SignalTypes.NEW_PLAYER,
         id
-    ));
+    ));    
+            
+    MTS.message((new MTSLib.Message(
+        Game.SignalTypes.SYNC_STATE,
+        Game.State
+    )).elevate());
 });
 
 app.listen(port, () => {
