@@ -1,9 +1,10 @@
 /* eslint-disable no-unused-vars */
-import QRCode from "qrcode";
 import React from "react";
 import MTSLib from "@lespantsfancy/message-transfer-system";
 
 import SignalTypes from "./../../SignalTypes";
+
+import Footer from "./Footer";
 
 export default class Game extends React.Component {
     constructor(props) {
@@ -19,10 +20,6 @@ export default class Game extends React.Component {
         this.setState({
             subscriptionId: id
         });
-
-        // QRCode.toDataURL(`http://192.168.86.100:3001`)
-        QRCode.toCanvas(document.getElementById("canvas-controller"), `http://192.168.86.100:3001/c`);
-        QRCode.toCanvas(document.getElementById("canvas-viewport"), `http://192.168.86.100:3001/v`);
         
         setTimeout(() => {
             this.context.internal.MODE = "VIEWPORT";
@@ -37,16 +34,16 @@ export default class Game extends React.Component {
     }
 
     render() {
+        let render = null;
+
         if(Object.keys(this.context.state).length === 0 || this.context.state.Word === "") {
-            return (
+            render = (
                 <div className="flex items-center justify-center h-100">
                     <div className="mt4 code tc f2">Waiting on Scribe...</div>
                 </div>
             )
-        }
-
-        if(this.context.state.Winner !== false) {
-            return (
+        } else if(this.context.state.Winner !== false) {
+            render = (
                 <div className="code tc mt4 flex flex-column items-center justify-around">
                     <br /><br />
                     <h1 className="f1 h3"><span role="img" aria-label="yay">🎊</span> Winner <span role="img" aria-label="yay">🎊</span></h1>
@@ -67,7 +64,7 @@ export default class Game extends React.Component {
 
             let words = this.context.state.Word.split(" ");
 
-            return (
+            render = (
                 <div className="flex flex-column items-center justify-around">
                     <div className="flex items-center justify-center">
                         {
@@ -112,9 +109,15 @@ export default class Game extends React.Component {
                             );
                         })
                     }
-                    <canvas id="canvas"></canvas>
                 </div>
             );
         }
+
+        return (
+            <div>
+                { render }
+                <Footer />
+            </div>
+        )
     }
 };
