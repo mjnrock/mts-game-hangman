@@ -10,10 +10,10 @@ Context.MTS.internal.QRCODE = {
     controller: null,
     viewport: null
 };
-QRCode.toDataURL(`${ Context.MTS.internal.URL }:3001/c`, function(err, url) {
+QRCode.toDataURL(`http://${ Context.MTS.internal.URL }:3001/c`, function(err, url) {
     Context.MTS.internal.QRCODE.controller = url;
 });
-QRCode.toDataURL(`${ Context.MTS.internal.URL }:3001/v`, function(err, url) {
+QRCode.toDataURL(`http://${ Context.MTS.internal.URL }:3001/v`, function(err, url) {
     Context.MTS.internal.QRCODE.viewport = url;
 });
 Context.MTS.Network.webSocketNode({ uri: `${ Context.MTS.internal.URL }:3000` });
