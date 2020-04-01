@@ -104,12 +104,9 @@ const MTS = (new MTSLib.Main({
         .if(Game.SignalTypes.NEW_WORD)
             .call(Game.init)
             .run(msg => {
-                // Game.init();
                 Game.State.Word = msg.payload.toUpperCase();
             })
             .send(Game.SignalTypes.SYNC_STATE, Game.State, { elevate: true })
-
-
         .if(Game.SignalTypes.NEW_GUESS)
             .run(msg => {
                 let letter = msg.payload;
